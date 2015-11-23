@@ -10,13 +10,6 @@ function setupLuaInstance() {
 	lua.doStringSync("function print(...) for i, v in next, {...} do OUTPUT=OUTPUT..tostring(v) end OUTPUT=OUTPUT..\"\n\" end");
 }
 
-function print(...)
-	for i, v in next, {...} do
-		OUTPUT = OUTPUT .. v
-	end
-	OUTPUT = OUTPUT .. '\n'
-end
-
 setupLuaInstance();
 
 function contains(a, obj) {
