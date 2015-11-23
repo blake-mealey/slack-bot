@@ -39,6 +39,7 @@ module.exports = function(formData, settings) {
 				ret = lua.getGlobal("OUTPUT");
 			} catch(e) {
 				ret = e;
+				console.log(e);
 			}
 		} catch(e) {
 			console.log(e);
