@@ -2,7 +2,7 @@
 var MATH_IMAGE_URL = "http://www.forkosh.com/mimetex.cgi?"
 
 // Libraries
-var parseMath = require('./libs/ASCIIMath2TeX');
+var parseMath = require('./ASCIIMath2TeX');
 
 // Handler function
 module.exports = function(formData) {
