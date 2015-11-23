@@ -19,7 +19,7 @@ function contains(a, obj) {
 var botHandlers = {};
 for(var name in config.bots) {
 	if(config.bots.hasOwnProperty(name)) {
-		botHandlers[name] = require("./bot-handlers/" + name + "_handler");
+		botHandlers[name] = require("./bot-handlers/" + name + "/handler.js");
 	}
 }
 
