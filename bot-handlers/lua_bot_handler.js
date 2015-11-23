@@ -1,19 +1,13 @@
 // Libraries
 var nodelua = require('nodelua');
 
-var output;
-function print() {
-	var args = Array.prototype.slice.call(arguments, print.length);
-	var output = "";
-	for (var i = 0; i < args.length; i++) {
-		output += args[i];
-	};
-}
-
 var lua;
 function setupLuaInstance() {
 	lua = new nodelua.LuaState('lua');
-	lua.registerFunction('print', print);
+	lua.registerFunction('print', pseudoprint);
+	lua.setGlobal("OUTPUT", "");
+	lua.doStringSync("print'hello world'");
+	lua.doStringSync("function print(...) for i, v in next, {...} do OUTPUT=OUTPUT..v end OUTPUT=OUTPUT..'\n' end");
 }
 
 setupLuaInstance();
@@ -32,15 +26,19 @@ function contains(a, obj) {
 module.exports = function(formData, settings) {
 	console.log("Lua bot handling request.");
 
+	if(formData.user_name == "slackbot") {
+		return null;
+	}
+
 	var ret;
 	if(formData.keyword == "lua") {
-		lua.doString(formData.message, function(error, retValue) {
-			if(!error && retValue) {
-				ret = output;
-			} else {
-				ret = error;
-			}
-		});
+		try {
+			lua.setGlobal("OUTPUT", "");
+			lua.doStringSync(formData.message);
+			ret = lua.getGlobal("OUTPUT");
+		} catch(e) {
+			console.log(e);
+		}
 	} else if(formData.keyword == "luaadmin" &&
 		contains(settings.admins, formData.user_name)) {
 		if(formData.message == "reset") {
