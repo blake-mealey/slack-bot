@@ -7,7 +7,7 @@ function setupLuaInstance() {
 	//lua.registerFunction('print', pseudoprint);
 	lua.setGlobal("OUTPUT", "");
 	//lua.doStringSync("function print(...) for i, v in next, {...} do OUTPUT=OUTPUT..v end OUTPUT=OUTPUT..'\n' end");
-	lua.doFileSync(__dirname + '../print.lua');
+	lua.doFileSync(__dirname + '/print.lua');
 }
 
 setupLuaInstance();
