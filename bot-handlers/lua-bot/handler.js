@@ -40,21 +40,20 @@ module.exports = function(formData, settings) {
 			}
 		};
 
-		if(!allowed) {
-			ret = "You used something that wasn't allowed!";
-			continue;
-		}
-
-		try {
-			lua.setGlobal("OUTPUT", "");
+		if(allowed) {
 			try {
-				lua.doStringSync(formData.message);
-				ret = lua.getGlobal("OUTPUT");
+				lua.setGlobal("OUTPUT", "");
+				try {
+					lua.doStringSync(formData.message);
+					ret = lua.getGlobal("OUTPUT");
+				} catch(e) {
+					ret = e.message;
+				}
 			} catch(e) {
-				ret = e.message;
+				console.log(e);
 			}
-		} catch(e) {
-			console.log(e);
+		} else {
+			ret = "You used something that wasn't allowed!";
 		}
 	} else if(formData.keyword == "luaadmin" &&
 		contains(settings.admins, formData.user_name)) {
