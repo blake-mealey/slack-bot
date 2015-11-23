@@ -1,5 +1,5 @@
 // General bot config
-var config = require('./bot_config');
+var config = require('./config');
 
 // Libraries
 var nodelua = require('nodelua');
