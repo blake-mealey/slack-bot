@@ -1,5 +1,5 @@
-// General bot settings and info
-var settings = require('./bot_settings');
+// General bot config
+var config = require('./bot_config');
 
 // Node libraries
 var http = require('http');
@@ -17,8 +17,8 @@ function contains(a, obj) {
 
 // Setup bot handlers
 var botHandlers = {};
-for(var name in settings.bots) {
-	if(settings.bots.hasOwnProperty(name)) {
+for(var name in config.bots) {
+	if(config.bots.hasOwnProperty(name)) {
 		botHandlers[name] = require("./bot-handlers/" + name + "_handler");
 	}
 }
@@ -38,16 +38,17 @@ var server = http.createServer(function(req, res) {
 
 			console.log("Handling request:")
 			console.log("From user: " + formData.user_name);
+			console.log("Of team: " + formData.team_domain);
 			console.log("In channel: " + formData.channel_name);
 			console.log("With keyword: " + formData.keyword);
 			console.log("Saying: " + formData.message);
 
 			var returnJSON;
-			for(var name in settings.bots) {
-				if(!settings.bots.hasOwnProperty(name)) { continue; }
-				if(contains(settings.bots[name].keywords, formData.keyword) &&
-					contains(settings.bots[name].api_tokens, formData.token)) {
-					returnJSON = botHandlers[name](formData);
+			for(var name in config.bots) {
+				if(!config.bots.hasOwnProperty(name)) { continue; }
+				if(contains(config.bots[name].keywords, formData.keyword) &&
+					contains(config.bots[name].api_tokens, formData.token)) {
+					returnJSON = botHandlers[name](formData, config.bots[name].settings);
 					break;
 				}
 			}
@@ -62,5 +63,5 @@ var server = http.createServer(function(req, res) {
 	}
 })
 
-server.listen(settings.server_port);
-console.log('Slack bot running on localhost:'+settings.server_port);
+server.listen(config.server_port);
+console.log('Slack bot running on localhost:'+config.server_port);
