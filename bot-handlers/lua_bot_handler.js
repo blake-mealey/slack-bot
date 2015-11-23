@@ -4,7 +4,7 @@ var nodelua = require('nodelua');
 var lua;
 function setupLuaInstance() {
 	lua = new nodelua.LuaState('lua');
-	lua.registerFunction('print', pseudoprint);
+	//lua.registerFunction('print', pseudoprint);
 	lua.setGlobal("OUTPUT", "");
 	lua.doStringSync("print'hello world'");
 	lua.doStringSync("function print(...) for i, v in next, {...} do OUTPUT=OUTPUT..v end OUTPUT=OUTPUT..'\n' end");
