@@ -21,7 +21,7 @@ function saveConfig() {
 			return console.log(err);
 		}
 
-		console.log("The file was saved!");
+		console.log("Lua bot config file saved.");
 	}); 
 }
 
@@ -75,24 +75,42 @@ module.exports = function(formData) {
 		} else {
 			ret = "You aren't allowed to use '" + illegalword + "'' in your code!";
 		}
-	} else if(formData.keyword == "luaadmin" && contains(config.user_admins, formData.user_name)) {
+	} else if(formData.keyword == "luaadmin") {
 		var firstSpace = formData.message.indexOf(" ")
 		var firstWord = formData.message.substr(0, firstSpace);
 		var secondWord = formData.message.substr(firstSpace + 1);
 
-		if(firstWord == "reset") {
-			setupLuaInstance();
-			ret = "Lua instance reset."
-		} else if(firstWord == "ban") {
-			if(!contains(config.user_blacklist, secondWord)) {
-				config.user_blacklist.push(secondWord);
+		if(contains(config.user_admins, formData.user_name) || contains(config.user_limited_admins, formData.user_name)) {
+			if(firstWord == "reset") {
+				setupLuaInstance();
+				ret = "Lua instance reset."
+			} else if(firstWord == "setlength") {
+				config.max_length = Number(secondWord);
 				saveConfig();
 			}
-		} else if(firstWord == "unban") {
-			var index = config.user_blacklist.indexOf(secondWord);
-			if(index > -1) {
-				config.user_blacklist.splice(index, 1);
-				saveConfig();
+		} else if(contains(config.user_admins, formData.user_name)) {
+			if(firstWord == "ban") {
+				if(!contains(config.user_blacklist, secondWord)) {
+					config.user_blacklist.push(secondWord);
+					saveConfig();
+				}
+			} else if(firstWord == "unban") {
+				var index = config.user_blacklist.indexOf(secondWord);
+				if(index > -1) {
+					config.user_blacklist.splice(index, 1);
+					saveConfig();
+				}
+			} else if(firstWord == "promote") {
+				if(!contains(config.user_limited_admins, secondWord)) {
+					config.user_limited_admins.push(secondWord);
+					saveConfig();
+				}
+			} else if(firstWord == "demote") {
+				var index = config.user_limited_admins.indexOf(secondWord);
+				if(index > -1) {
+					config.user_limited_admins.splice(index, 1);
+					saveConfig();
+				}
 			}
 		}
 	}
