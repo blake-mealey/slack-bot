@@ -14,6 +14,7 @@ module.exports = {
 			api_tokens: ["orP5nPZ5VhVmWXAsZp8UFsGq", "Az0nkJFDDTGoOwI4tvlBGh7W"]
 		},
 
+		// Lua bot
 		lua_bot: {
 			keywords: ["lua", "luaadmin"],
 			api_tokens: ["oaO0zwUM72SO4l2FkisKZChY"],
