@@ -38,8 +38,7 @@ module.exports = function(formData, settings) {
 				lua.doStringSync(formData.message);
 				ret = lua.getGlobal("OUTPUT");
 			} catch(e) {
-				ret = e;
-				console.log(e);
+				ret = e.message;
 			}
 		} catch(e) {
 			console.log(e);
