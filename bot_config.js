@@ -20,7 +20,7 @@ module.exports = {
 			api_tokens: ["oaO0zwUM72SO4l2FkisKZChY", "ReShF6M0O7iEKGVYLK7hCGZC"],
 			settings: {
 				admins: ["morgoth", "m0rgoth"],
-				lua_blacklist: ["while"];
+				lua_blacklist: ["while"]
 			}
 		}
 	},
