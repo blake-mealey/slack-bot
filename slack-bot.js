@@ -48,7 +48,7 @@ var server = http.createServer(function(req, res) {
 				if(!config.bots.hasOwnProperty(name)) { continue; }
 				if(contains(config.bots[name].keywords, formData.keyword) &&
 					contains(config.bots[name].api_tokens, formData.token)) {
-					returnJSON = botHandlers[name](formData, config.bots[name].settings);
+					returnJSON = botHandlers[name](formData);
 					break;
 				}
 			}

@@ -17,11 +17,7 @@ module.exports = {
 		// Lua bot
 		"lua-bot": {
 			keywords: ["lua", "luaadmin"],
-			api_tokens: ["oaO0zwUM72SO4l2FkisKZChY", "ReShF6M0O7iEKGVYLK7hCGZC"],
-			settings: {
-				admins: ["morgoth", "m0rgoth"],
-				lua_blacklist: ["while"]
-			}
+			api_tokens: ["oaO0zwUM72SO4l2FkisKZChY", "ReShF6M0O7iEKGVYLK7hCGZC"]
 		}
 	},
 
