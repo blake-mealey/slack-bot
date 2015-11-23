@@ -34,8 +34,12 @@ module.exports = function(formData, settings) {
 	if(formData.keyword == "lua") {
 		try {
 			lua.setGlobal("OUTPUT", "");
-			lua.doStringSync(formData.message);
-			ret = lua.getGlobal("OUTPUT");
+			try {
+				lua.doStringSync(formData.message);
+				ret = lua.getGlobal("OUTPUT");
+			} catch(e) {
+				ret = e;
+			}
 		} catch(e) {
 			console.log(e);
 		}
