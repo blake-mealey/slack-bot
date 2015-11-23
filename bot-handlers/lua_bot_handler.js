@@ -7,8 +7,15 @@ function setupLuaInstance() {
 	//lua.registerFunction('print', pseudoprint);
 	lua.setGlobal("OUTPUT", "");
 	lua.doStringSync("print'hello world'");
-	lua.doStringSync("function print(...) for i, v in next, {...} do OUTPUT=OUTPUT..v end OUTPUT=OUTPUT..'\n' end");
+	lua.doStringSync("function print(...) for i, v in next, {...} do OUTPUT=OUTPUT..tostring(v) end OUTPUT=OUTPUT..\"\n\" end");
 }
+
+function print(...)
+	for i, v in next, {...} do
+		OUTPUT = OUTPUT .. v
+	end
+	OUTPUT = OUTPUT .. '\n'
+end
 
 setupLuaInstance();
 
