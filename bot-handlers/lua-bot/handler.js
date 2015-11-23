@@ -55,7 +55,7 @@ module.exports = function(formData, settings) {
 				console.log(e);
 			}
 		} else {
-			ret = "You aren't allowed to use " + illegalword + " something that wasn't allowed!";
+			ret = "You aren't allowed to use " + illegalword + " in your code!";
 		}
 	} else if(formData.keyword == "luaadmin" &&
 		contains(settings.admins, formData.user_name)) {
