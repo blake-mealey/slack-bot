@@ -1,10 +1,19 @@
 // Bot configuration file
 module.exports = {
-	// API token for the math bot
-	math_bot_api_token: "MeOMOCQVJuNVmy5ncAXawuHc",
+	// Bot setup
+	bots: {
+		// Math bot
+		math_bot: {
+			keywords: ["math"],
+			api_tokens: ["MeOMOCQVJuNVmy5ncAXawuHc", "DVnsiBDARYberjjyIOBoq6ez"]
+		},
 
-	// API token for the echo bot
-	echo_bot_api_token: "orP5nPZ5VhVmWXAsZp8UFsGq",
+		// Echo bot
+		echo_bot: {
+			keywords: ["echo"],
+			api_tokens: ["orP5nPZ5VhVmWXAsZp8UFsGq", "Az0nkJFDDTGoOwI4tvlBGh7W"]
+		}
+	},
 
 	// Port to listen to on the server
 	server_port: 8080

@@ -5,7 +5,7 @@ module.exports = function(formData, res) {
 	if(formData.user_name != "slackbot") {
 		res.writeHead(200, {'Content-Type': 'application/json'});
 		var json = JSON.stringify({
-			text: formData.message;
+			text: formData.message
 		});
 		res.end(json);
 	} else {

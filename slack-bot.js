@@ -5,9 +5,23 @@ var settings = require('./bot_settings');
 var http = require('http');
 var qs = require('querystring');
 
-// Bot handlers
-var mathBotHandler = require('./math_bot_handler');
-var echoBotHandler = require('./echo_bot_handler');
+function contains(a, obj) {
+	var i = a.length;
+	while (i--) {
+		if (a[i] === obj) {
+			return true;
+		}
+	}
+	return false;
+}
+
+// Setup bot handlers
+var botHandlers = {};
+for(var name in settings.bots) {
+	if(settings.bots.hasOwnProperty(name)) {
+		botHandlers[name] = require("./bot-handlers/" + name + "_handler");
+	}
+}
 
 var server = http.createServer(function(req, res) {
 	if(req.method == "POST") {
@@ -28,15 +42,18 @@ var server = http.createServer(function(req, res) {
 			console.log("With keyword: " + formData.keyword);
 			console.log("Saying: " + formData.message);
 
-			if(formData.token == settings.math_bot_api_token) {
-				mathBotHandler(formData, res);
-			} else if(formData.token == settings.echo_bot_api_token) {
-				echoBotHandler(formData, res);
+			for(var name in settings.bots) {
+				if(settings.bots.hasOwnProperty(name)) {
+					if(contains(settings.bots[name].keywords, formData.keyword) &&
+						contains(settings.bots[name].api_tokens, formData.token)) {
+						botHandlers[name](formData, res);
+					}
+				}
 			}
 
 			console.log("\n");
 		});
- 	}
+	}
 })
 
 server.listen(settings.server_port);
