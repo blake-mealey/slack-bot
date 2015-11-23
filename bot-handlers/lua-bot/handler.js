@@ -32,6 +32,19 @@ module.exports = function(formData, settings) {
 
 	var ret;
 	if(formData.keyword == "lua") {
+		var allowed = true;
+		for (var i = 0; i < settings.lua_blacklist.length; i++) {
+			if(formData.message.indexOf(settings.lua_blacklist[i]) > -1) {
+				allowed = false;
+				break;
+			}
+		};
+
+		if(!allowed) {
+			ret = "You used something that wasn't allowed!";
+			continue;
+		}
+
 		try {
 			lua.setGlobal("OUTPUT", "");
 			try {
