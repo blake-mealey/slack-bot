@@ -5,11 +5,10 @@ var MATH_IMAGE_URL = "http://www.forkosh.com/mimetex.cgi?"
 var parseMath = require('./../libs/ASCIIMath2TeX');
 
 // Handler function
-module.exports = function(formData, res) {
+module.exports = function(formData) {
 	console.log("Math bot handling request.");
 
-	res.writeHead(200, {'Content-Type': 'application/json'});
-	var json = JSON.stringify({
+	return {
 		text: formData.user_name + ":",
 		attachments: [
 			{
@@ -17,6 +16,5 @@ module.exports = function(formData, res) {
 				"image_url": MATH_IMAGE_URL + parseMath(formData.message)
 			}
 		]
-	});
-	res.end(json);
+	}
 }

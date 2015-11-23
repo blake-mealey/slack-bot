@@ -42,13 +42,19 @@ var server = http.createServer(function(req, res) {
 			console.log("With keyword: " + formData.keyword);
 			console.log("Saying: " + formData.message);
 
+			var returnJSON;
 			for(var name in settings.bots) {
-				if(settings.bots.hasOwnProperty(name)) {
-					if(contains(settings.bots[name].keywords, formData.keyword) &&
-						contains(settings.bots[name].api_tokens, formData.token)) {
-						botHandlers[name](formData, res);
-					}
+				if(!settings.bots.hasOwnProperty(name)) { continue; }
+				if(contains(settings.bots[name].keywords, formData.keyword) &&
+					contains(settings.bots[name].api_tokens, formData.token)) {
+					returnJSON = botHandlers[name](formData);
+					break;
 				}
+			}
+
+			if(returnJSON != null) {
+				res.writeHead(200, {'Content-Type': 'application/json'});
+				res.end(JSON.stringify(returnJSON));
 			}
 
 			console.log("\n");
