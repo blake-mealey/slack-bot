@@ -111,6 +111,17 @@ module.exports = function(formData) {
 					config.user_limited_admins.splice(index, 1);
 					saveConfig();
 				}
+			} else if(firstWord == "blacklist") {
+				if(!contains(config.lua_blacklist, secondWord)) {
+					config.lua_blacklist.push(secondWord);
+					saveConfig();
+				}
+			} else if(firstWord == "whitelist") {
+				var index = config.lua_blacklist.indexOf(secondWord);
+				if(index > -1) {
+					config.lua_blacklist.splice(index, 1);
+					saveConfig();
+				}
 			}
 		}
 	}
