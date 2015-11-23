@@ -33,9 +33,11 @@ module.exports = function(formData, settings) {
 	var ret;
 	if(formData.keyword == "lua") {
 		var allowed = true;
+		var illegalword = "";
 		for (var i = 0; i < settings.lua_blacklist.length; i++) {
 			if(formData.message.indexOf(settings.lua_blacklist[i]) > -1) {
 				allowed = false;
+				illegalword = settings.lua_blacklist[i];
 				break;
 			}
 		};
@@ -53,7 +55,7 @@ module.exports = function(formData, settings) {
 				console.log(e);
 			}
 		} else {
-			ret = "You used something that wasn't allowed!";
+			ret = "You aren't allowed to use " + illegalword + " something that wasn't allowed!";
 		}
 	} else if(formData.keyword == "luaadmin" &&
 		contains(settings.admins, formData.user_name)) {
