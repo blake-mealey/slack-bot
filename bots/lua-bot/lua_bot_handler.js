@@ -29,6 +29,9 @@ function runAndCaptureOutput(name, string) {
 	try {
 		output = "";
 		luaInstances[name].doStringSync(string);
+		if(output.length > config.max_length) {
+			output = output.substr(0, config.max_length);
+		}
 		return output;
 	} catch(e) {
 		return e.message;
