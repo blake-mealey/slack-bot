@@ -18,12 +18,26 @@ function pseudoprint() {
 // Table containing all currently running instances
 var luaInstances = {};
 
+// Saves the config object to the config file
+function saveConfig() {
+	var str = "module.exports = " + JSON.stringify(config);
+
+	fs.writeFile(__dirname + "/lua_bot_config.js", str, function(err) {
+		if(err) {
+			return console.log(err);
+		}
+
+		console.log("Lua bot config file saved.");
+	}); 
+}
+
 // Starts a Lua instance
 function setupLuaInstance(name) {
 	luaInstances[name] = new nodelua.LuaState(name);
 	luaInstances[name].registerFunction('print', pseudoprint);
 	if(config[name] == null) {
 		config[name] = JSON.parse(JSON.stringify(config.defaults));
+		saveConfig();
 	}
 }
 
@@ -54,19 +68,6 @@ function saveGlobalTable(name) {
 		}
 
 		console.log("Lua bot global table file saved.");
-	}); 
-}
-
-// Saves the config object to the config file
-function saveConfig() {
-	var str = "module.exports = " + JSON.stringify(config);
-
-	fs.writeFile(__dirname + "/lua_bot_config.js", str, function(err) {
-		if(err) {
-			return console.log(err);
-		}
-
-		console.log("Lua bot config file saved.");
 	}); 
 }
 
