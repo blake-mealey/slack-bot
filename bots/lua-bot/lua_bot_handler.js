@@ -149,6 +149,7 @@ module.exports = function(formData) {
 					};
 				}
 			} else if(firstWord == "getlength") {
+				console.log('hi');
 				ret = config.max_length.toString();
 			}
 		} 
