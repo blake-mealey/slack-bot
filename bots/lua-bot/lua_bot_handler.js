@@ -130,9 +130,7 @@ module.exports = function(formData) {
 		var firstSpace = formData.message.indexOf(" ")
 		var firstWord = formData.message.substr(0, firstSpace);
 		var secondWord;
-		console.log(formData.message.length);
-		console.log(firstSpace + firstWord.length);
-		if(formData.message.length > firstSpace + firstWord.length) {
+		if(firstSpace > 0) {
 			var secondWord = formData.message.substr(firstSpace + 1);
 		}
 
