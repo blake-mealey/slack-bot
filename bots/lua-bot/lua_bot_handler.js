@@ -149,7 +149,7 @@ module.exports = function(formData) {
 					};
 				}
 			} else if(firstWord == "getlength") {
-				ret = config.max_length;
+				ret = config.max_length.toString();
 			}
 		} 
 		if(contains(config.user_admins, formData.user_name)) {
