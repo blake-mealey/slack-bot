@@ -54,7 +54,8 @@ function saveGlobalTable(name) {
 // Saves the config object to the config file
 function saveConfig() {
 	var str = "module.exports = " + JSON.stringify(config);
-	fs.writeFile(__dirname + "/config.js", str, function(err) {
+
+	fs.writeFile(__dirname + "/lua_bot_config.js", str, function(err) {
 		if(err) {
 			return console.log(err);
 		}
