@@ -141,7 +141,7 @@ module.exports = function(formData) {
 				ret = "Max length of output set to: " + config.max_length
 			} else if(firstWord == "list") {
 				var listName = secondWord == "admins" ? "user_admins" : secondWord == "limitedadmins" ? "user_limited_admins" : secondWord == "banned" ?
-					"user_blacklist" : secondWord == "blacklist" : "lua_blacklist" : null;
+					"user_blacklist" : secondWord == "blacklist" ? "lua_blacklist" : null;
 				if(listName != null) {
 					ret = "";
 					for (var i = 0; i < config[listName].length; i++) {
