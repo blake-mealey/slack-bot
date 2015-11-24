@@ -115,7 +115,8 @@ function addToList(ret, list, commands, successString, failureString) {
 	};
 }
 
-function removeFromList(ret, list, commands, successString, failureString) {
+function removeFromList(list, commands, successString, failureString) {
+	var ret = "";
 	for (var i = 1; i < commands.length; i++) {
 		if(removeFromArray(list, commands[i])) {
 			ret += commands[i] + " " + successString;
@@ -127,6 +128,7 @@ function removeFromList(ret, list, commands, successString, failureString) {
 			ret += "\n";
 		}
 	};
+	return ret;
 }
 
 // Handler function
@@ -188,17 +190,17 @@ module.exports = function(formData) {
 
 			if(isAdmin) {
 				if(commands[0] == "ban") {
-					addToList(ret, thisconfig.user_blacklist, commands, "was added to ban list.", "is already on the ban list.");
+					ret = addToList(thisconfig.user_blacklist, commands, "was added to ban list.", "is already on the ban list.");
 				} else if(commands[0] == "unban") {
-					removeFromList(ret, thisconfig.user_blacklist, commands, "was removed from ban list.", "is not on the ban list.");
+					ret = removeFromList(thisconfig.user_blacklist, commands, "was removed from ban list.", "is not on the ban list.");
 				} else if(commands[0] == "promote") {
-					addToList(ret, thisconfig.user_limited_admins, commands, "was promoted to a limited admin.", "is already a limited admin.");
+					ret = addToList(thisconfig.user_limited_admins, commands, "was promoted to a limited admin.", "is already a limited admin.");
 				} else if(commands[0] == "demote") {
-					removeFromList(ret, thisconfig.user_limited_admins, commands, "was demoted from a limited admin.", "wasn't a limited admin to start with.");
+					ret = removeFromList(thisconfig.user_limited_admins, commands, "was demoted from a limited admin.", "wasn't a limited admin to start with.");
 				} else if(commands[0] == "blacklist") {
-					addToList(ret, thisconfig.lua_blacklist, commands, "was added to the blacklist.", "is already on the blacklist.");
+					ret = addToList(thisconfig.lua_blacklist, commands, "was added to the blacklist.", "is already on the blacklist.");
 				} else if(commands[0] == "whitelist") {
-					removeFromList(ret, thisconfig.lua_blacklist, commands, "was removed from the blacklist.", "is already on the whitelist.");
+					ret = removeFromList(thisconfig.lua_blacklist, commands, "was removed from the blacklist.", "is already on the whitelist.");
 				}
 			}
 		}
