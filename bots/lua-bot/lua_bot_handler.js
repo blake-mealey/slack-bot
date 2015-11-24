@@ -140,7 +140,16 @@ module.exports = function(formData) {
 				saveConfig();
 				ret = "Max length of output set to: " + config.max_length
 			} else if(firstWord == "list") {
-				// Print contents of config
+				var listName = secondWord == "admins" ? "user_admins" : secondWord == "limitedadmins" ? "user_limited_admins" : secondWord == "banned" ?
+					"user_blacklist" : secondWord == "blacklist" : "lua_blacklist" : null;
+				if(listName != null) {
+					ret = "";
+					for (var i = 0; i < config[listName].length; i++) {
+						ret += config[listName][i] + i < config[listName].length ? ", " : "";
+					};
+				}
+			} else if(firstWord == "getlength") {
+				ret = config.max_length;
 			}
 		} 
 		if(contains(config.user_admins, formData.user_name)) {
