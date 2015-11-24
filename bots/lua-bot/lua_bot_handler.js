@@ -101,11 +101,11 @@ function removeFromArray(array, element) {
 	return false;
 }
 
-function addToList(ret, list, commands, successString, failureString) {
+function addToList(list, commands, successString, failureString) {
+	var ret = "";
 	for (var i = 1; i < commands.length; i++) {
 		if(appendToArray(list, commands[i])) {
 			ret += commands[i] + " " + successString;
-			saveConfig();
 		} else {
 			ret += commands[i] + " " + failureString;
 		}
@@ -113,6 +113,8 @@ function addToList(ret, list, commands, successString, failureString) {
 			ret += "\n";
 		}
 	};
+	saveConfig();
+	return ret;
 }
 
 function removeFromList(list, commands, successString, failureString) {
@@ -120,7 +122,6 @@ function removeFromList(list, commands, successString, failureString) {
 	for (var i = 1; i < commands.length; i++) {
 		if(removeFromArray(list, commands[i])) {
 			ret += commands[i] + " " + successString;
-			saveConfig();
 		} else {
 			ret += commands[i] + " " + failureString;
 		}
@@ -128,6 +129,7 @@ function removeFromList(list, commands, successString, failureString) {
 			ret += "\n";
 		}
 	};
+	saveConfig();
 	return ret;
 }
 
