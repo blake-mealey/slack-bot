@@ -113,7 +113,7 @@ module.exports = function(formData) {
 	if(formData.keyword == "lua" && !contains(config.user_blacklist, formData.user_name)) {
 		var illegalword;
 		for (var i = 0; i < config.lua_blacklist.length; i++) {
-			if(new RegExp("\\b" + config.lua_blacklist[i] + "\\b")) {
+			if(new RegExp("\\b" + config.lua_blacklist[i] + "\\b").test()) {
 				illegalword = config.lua_blacklist[i];
 				break;
 			}
@@ -122,7 +122,7 @@ module.exports = function(formData) {
 		if(illegalword == null) {
 			ret = runAndCaptureOutput(formData.team_domain, formData.message);
 		} else {
-			ret = "You aren't allowed to use '" + illegalword + "'' in your code!";
+			ret = "You aren't allowed to use '" + illegalword + "' in your code!";
 		}
 	} else if(formData.keyword == "luaadmin") {
 		var commands = formData.message.split(' ');
