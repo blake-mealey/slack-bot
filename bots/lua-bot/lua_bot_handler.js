@@ -140,12 +140,10 @@ module.exports = function(formData) {
 			} else if(commands[0] == "list") {
 				var listName = commands[1] == "admins" ? "user_admins" : commands[1] == "limitedadmins" ? "user_limited_admins" : commands[1] == "banned" ?
 					"user_blacklist" : commands[1] == "blacklist" ? "lua_blacklist" : null;
-				console.log(commands[1]);
-				console.log(listName);
 				if(listName != null) {
 					ret = "";
 					for (var i = 0; i < config[listName].length; i++) {
-						ret += config[listName][i] + (i < config[listName].length ? ", " : "");
+						ret += config[listName][i] + (i < config[listName].length - 1 ? ", " : "");
 					};
 				}
 			} else if(commands[0] == "getlength") {
