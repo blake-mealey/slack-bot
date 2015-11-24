@@ -145,7 +145,7 @@ module.exports = function(formData) {
 				if(listName != null) {
 					ret = "";
 					for (var i = 0; i < config[listName].length; i++) {
-						ret += config[listName][i] + i < config[listName].length ? ", " : "";
+						ret += config[listName][i] + (i < config[listName].length ? ", " : "");
 					};
 				}
 			} else if(commands[0] == "getlength") {
