@@ -127,6 +127,9 @@ module.exports = function(formData) {
 		var firstWord = formData.message.substr(0, firstSpace);
 		var secondWord = formData.message.substr(firstSpace + 1);
 
+		console.log(firstWord);
+		console.log(secondWord);
+
 		if(contains(config.user_admins, formData.user_name) || contains(config.user_limited_admins, formData.user_name)) {
 			if(firstWord == "reset") {
 				setupLuaInstance(formData.team_domain);
