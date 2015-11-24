@@ -22,6 +22,9 @@ var luaInstances = {};
 function setupLuaInstance(name) {
 	luaInstances[name] = new nodelua.LuaState(name);
 	luaInstances[name].registerFunction('print', pseudoprint);
+	if(config[name] == null) {
+		config[name] = JSON.parse(JSON.stringify(config.defaults));
+	}
 }
 
 // Captures the output after running some Lua code
@@ -29,8 +32,8 @@ function runAndCaptureOutput(name, string) {
 	try {
 		output = "";
 		luaInstances[name].doStringSync(string);
-		if(output.length > config.max_length) {
-			output = output.substr(0, config.max_length);
+		if(output.length > config[name].max_length) {
+			output = output.substr(0, config[name].max_length);
 		}
 		return output;
 	} catch(e) {
@@ -109,12 +112,14 @@ module.exports = function(formData) {
 		setupLuaInstance(formData.team_domain);
 	}
 
+	var thisconfig = config[formData.team_domain];
+
 	var ret;
-	if(formData.keyword == "lua" && !contains(config.user_blacklist, formData.user_name)) {
+	if(formData.keyword == "lua" && !contains(thisconfig.user_blacklist, formData.user_name)) {
 		var illegalword;
-		for (var i = 0; i < config.lua_blacklist.length; i++) {
-			if(new RegExp("\\b" + config.lua_blacklist[i] + "\\b").test(formData.message)) {
-				illegalword = config.lua_blacklist[i];
+		for (var i = 0; i < thisconfig.lua_blacklist.length; i++) {
+			if(new RegExp("\\b" + thisconfig.lua_blacklist[i] + "\\b").test(formData.message)) {
+				illegalword = thisconfig.lua_blacklist[i];
 				break;
 			}
 		};
@@ -127,69 +132,69 @@ module.exports = function(formData) {
 	} else if(formData.keyword == "luaadmin") {
 		var commands = formData.message.split(' ');
 
-		var isAdmin = contains(config.user_admins, formData.user_name);
-		var isLimitedAdmin = contains(config.user_limited_admins, formData.user_name);
+		var isAdmin = contains(thisconfig.user_admins, formData.user_name);
+		var isLimitedAdmin = contains(thisconfig.user_limited_admins, formData.user_name);
 
 		if(isAdmin || isLimitedAdmin) {
 			if(commands[0] == "reset") {
 				setupLuaInstance(formData.team_domain);
 				ret = "Lua instance reset."
 			} else if(commands[0] == "setlength") {
-				config.max_length = Number(commands[1]);
+				thisconfig.max_length = Number(commands[1]);
 				saveConfig();
-				ret = "Max length of output set to: " + config.max_length;
+				ret = "Max length of output set to: " + thisconfig.max_length;
 			} else if(commands[0] == "list") {
 				var listName = commands[1] == "admins" ? "user_admins" : commands[1] == "limitedadmins" ? "user_limited_admins" : commands[1] == "banned" ?
 					"user_blacklist" : commands[1] == "blacklist" ? "lua_blacklist" : null;
 				if(listName != null) {
 					ret = "";
-					for (var i = 0; i < config[listName].length; i++) {
-						ret += config[listName][i] + (i < config[listName].length - 1 ? ", " : "");
+					for (var i = 0; i < thisconfig[listName].length; i++) {
+						ret += thisconfig[listName][i] + (i < thisconfig[listName].length - 1 ? ", " : "");
 					};
 				}
 			} else if(commands[0] == "getlength") {
 				console.log('hi');
-				ret = config.max_length.toString();
+				ret = thisconfig.max_length.toString();
 			}
 
 			if(isAdmin) {
 				if(commands[0] == "ban") {
-					if(appendToArray(config.user_blacklist, commands[1])) {
+					if(appendToArray(thisconfig.user_blacklist, commands[1])) {
 						ret = commands[1] + " was added to ban list."
 						saveConfig();
 					} else {
 						ret = commands[1] + " is already on the ban list."
 					}
 				} else if(commands[0] == "unban") {
-					if(removeFromArray(config.user_blacklist, commands[1])) {
+					if(removeFromArray(thisconfig.user_blacklist, commands[1])) {
 						ret = commands[1] + " was removed from the ban list."
 						saveConfig();
 					} else {
 						ret = commands[1] + " is not on the ban list."
 					}
 				} else if(commands[0] == "promote") {
-					if(appendToArray(config.user_limited_admins, commands[1])) {
+					if(appendToArray(thisconfig.user_limited_admins, commands[1])) {
 						ret = commands[1] + " was promoted to a limited admin."
 						saveConfig();
 					} else {
 						ret = commands[1] + " is already a limited admin."
 					}
 				} else if(commands[0] == "demote") {
-					if(removeFromArray(config.user_limited_admins, commands[1])) {
+					if(removeFromArray(thisconfig.user_limited_admins, commands[1])) {
 						ret = commands[1] + " was demoted from a limited admin."
 						saveConfig();
 					} else {
 						ret = commands[1] + " wasn't a limited admin to start with."
 					}
 				} else if(commands[0] == "blacklist") {
-					if(appendToArray(config.lua_blacklist, commands[1])) {
+					if(appendToArray(thisconfig.lua_blacklist, commands[1])) {
 						ret = commands[1] + " was added to the blacklist."
 						saveConfig();
 					} else {
 						ret = commands[1] + " is already on the blacklist."
 					}
 				} else if(commands[0] == "whitelist") {
-					if(removeFromArray(config.lua_blacklist, commands[1])) {
+					if(removeFromArray(thisconfig.lua_blacklist, commands[1])) {
 						ret = commands[1] + " was removed from the blacklist."
 						saveConfig();
 					} else {
@@ -198,7 +203,7 @@ module.exports = function(formData) {
 				}
 			}
 		}
-		
+
 		if(ret == null) {
 			ret = "You do not have the privileges to do this.";
 		}
