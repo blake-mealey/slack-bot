@@ -1,6 +1,6 @@
 // Configuration file
 module.exports = {
-	defaults = {
+	defaults: {
 		// Users with admin status
 		user_admins: ["morgoth", "m0rgoth"],
 
