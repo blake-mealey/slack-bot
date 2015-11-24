@@ -127,77 +127,72 @@ module.exports = function(formData) {
 			ret = "You aren't allowed to use '" + illegalword + "'' in your code!";
 		}
 	} else if(formData.keyword == "luaadmin") {
-		var firstSpace = formData.message.indexOf(" ")
-		var firstWord = formData.message.substr(0, firstSpace);
-		var secondWord;
-		if(firstSpace > 0) {
-			var secondWord = formData.message.substr(firstSpace + 1);
-		}
+		var commands = formData.message.split(' ');
 
 		if(contains(config.user_admins, formData.user_name) || contains(config.user_limited_admins, formData.user_name)) {
-			if(firstWord == "reset") {
+			if(commands[0] == "reset") {
 				setupLuaInstance(formData.team_domain);
 				ret = "Lua instance reset."
-			} else if(firstWord == "setlength") {
-				config.max_length = Number(secondWord);
+			} else if(commands[0] == "setlength") {
+				config.max_length = Number(commands[1]);
 				saveConfig();
 				ret = "Max length of output set to: " + config.max_length;
-			} else if(firstWord == "list") {
-				var listName = secondWord == "admins" ? "user_admins" : secondWord == "limitedadmins" ? "user_limited_admins" : secondWord == "banned" ?
-					"user_blacklist" : secondWord == "blacklist" ? "lua_blacklist" : null;
+			} else if(commands[0] == "list") {
+				var listName = commands[1] == "admins" ? "user_admins" : commands[1] == "limitedadmins" ? "user_limited_admins" : commands[1] == "banned" ?
+					"user_blacklist" : commands[1] == "blacklist" ? "lua_blacklist" : null;
 				if(listName != null) {
 					ret = "";
 					for (var i = 0; i < config[listName].length; i++) {
 						ret += config[listName][i] + i < config[listName].length ? ", " : "";
 					};
 				}
-			} else if(firstWord == "getlength") {
+			} else if(commands[0] == "getlength") {
 				console.log('hi');
 				ret = config.max_length.toString();
 			}
 		} 
 		if(contains(config.user_admins, formData.user_name)) {
-			if(firstWord == "ban") {
-				if(appendToArray(config.user_blacklist, secondWord)) {
-					ret = secondWord + " was added to ban list."
+			if(commands[0] == "ban") {
+				if(appendToArray(config.user_blacklist, commands[1])) {
+					ret = commands[1] + " was added to ban list."
 					saveConfig();
 				} else {
-					ret = secondWord + " is already on the ban list."
+					ret = commands[1] + " is already on the ban list."
 				}
-			} else if(firstWord == "unban") {
-				if(removeFromArray(config.user_blacklist, secondWord)) {
-					ret = secondWord + " was removed from the ban list."
+			} else if(commands[0] == "unban") {
+				if(removeFromArray(config.user_blacklist, commands[1])) {
+					ret = commands[1] + " was removed from the ban list."
 					saveConfig();
 				} else {
-					ret = secondWord + " is not on the ban list."
+					ret = commands[1] + " is not on the ban list."
 				}
-			} else if(firstWord == "promote") {
-				if(appendToArray(config.user_limited_admins, secondWord)) {
-					ret = secondWord + " was promoted to a limited admin."
+			} else if(commands[0] == "promote") {
+				if(appendToArray(config.user_limited_admins, commands[1])) {
+					ret = commands[1] + " was promoted to a limited admin."
 					saveConfig();
 				} else {
-					ret = secondWord + " is already a limited admin."
+					ret = commands[1] + " is already a limited admin."
 				}
-			} else if(firstWord == "demote") {
-				if(removeFromArray(config.user_limited_admins, secondWord)) {
-					ret = secondWord + " was demoted from a limited admin."
+			} else if(commands[0] == "demote") {
+				if(removeFromArray(config.user_limited_admins, commands[1])) {
+					ret = commands[1] + " was demoted from a limited admin."
 					saveConfig();
 				} else {
-					ret = secondWord + " wasn't a limited admin to start with."
+					ret = commands[1] + " wasn't a limited admin to start with."
 				}
-			} else if(firstWord == "blacklist") {
-				if(appendToArray(config.lua_blacklist, secondWord)) {
-					ret = secondWord + " was added to the blacklist."
+			} else if(commands[0] == "blacklist") {
+				if(appendToArray(config.lua_blacklist, commands[1])) {
+					ret = commands[1] + " was added to the blacklist."
 					saveConfig();
 				} else {
-					ret = secondWord + " is already on the blacklist."
+					ret = commands[1] + " is already on the blacklist."
 				}
-			} else if(firstWord == "whitelist") {
-				if(removeFromArray(config.lua_blacklist, secondWord)) {
-					ret = secondWord + " was removed from the blacklist."
+			} else if(commands[0] == "whitelist") {
+				if(removeFromArray(config.lua_blacklist, commands[1])) {
+					ret = commands[1] + " was removed from the blacklist."
 					saveConfig();
 				} else {
-					ret = secondWord + " is already on the whitelist."
+					ret = commands[1] + " is already on the whitelist."
 				}
 			}
 		}
