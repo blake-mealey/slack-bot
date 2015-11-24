@@ -101,6 +101,34 @@ function removeFromArray(array, element) {
 	return false;
 }
 
+function addToList(ret, list, commands, successString, failureString) {
+	for (var i = 1; i < commands.length; i++) {
+		if(appendToArray(list, commands[i])) {
+			ret += commands[i] + " " + successString;
+			saveConfig();
+		} else {
+			ret += commands[i] + " " + failureString;
+		}
+		if(i < commands.length - 2) {
+			ret += "\n";
+		}
+	};
+}
+
+function removeFromList(ret, list, commands, successString, failureString) {
+	for (var i = 1; i < commands.length; i++) {
+		if(removeFromArray(list, commands[i])) {
+			ret += commands[i] + " " + successString;
+			saveConfig();
+		} else {
+			ret += commands[i] + " " + failureString;
+		}
+		if(i < commands.length - 2) {
+			ret += "\n";
+		}
+	};
+}
+
 // Handler function
 module.exports = function(formData) {
 	console.log("Lua bot handling request.");
@@ -160,47 +188,17 @@ module.exports = function(formData) {
 
 			if(isAdmin) {
 				if(commands[0] == "ban") {
-					if(appendToArray(thisconfig.user_blacklist, commands[1])) {
-						ret = commands[1] + " was added to ban list."
-						saveConfig();
-					} else {
-						ret = commands[1] + " is already on the ban list."
-					}
+					addToList(ret, thisconfig.user_blacklist, commands, "was added to ban list.", "is already on the ban list.");
 				} else if(commands[0] == "unban") {
-					if(removeFromArray(thisconfig.user_blacklist, commands[1])) {
-						ret = commands[1] + " was removed from the ban list."
-						saveConfig();
-					} else {
-						ret = commands[1] + " is not on the ban list."
-					}
+					removeFromList(ret, thisconfig.user_blacklist, commands, "was removed from ban list.", "is not on the ban list.");
 				} else if(commands[0] == "promote") {
-					if(appendToArray(thisconfig.user_limited_admins, commands[1])) {
-						ret = commands[1] + " was promoted to a limited admin."
-						saveConfig();
-					} else {
-						ret = commands[1] + " is already a limited admin."
-					}
+					addToList(ret, thisconfig.user_limited_admins, commands, "was promoted to a limited admin.", "is already a limited admin.");
 				} else if(commands[0] == "demote") {
-					if(removeFromArray(thisconfig.user_limited_admins, commands[1])) {
-						ret = commands[1] + " was demoted from a limited admin."
-						saveConfig();
-					} else {
-						ret = commands[1] + " wasn't a limited admin to start with."
-					}
+					removeFromList(ret, thisconfig.user_limited_admins, commands, "was demoted from a limited admin.", "wasn't a limited admin to start with.");
 				} else if(commands[0] == "blacklist") {
-					if(appendToArray(thisconfig.lua_blacklist, commands[1])) {
-						ret = commands[1] + " was added to the blacklist."
-						saveConfig();
-					} else {
-						ret = commands[1] + " is already on the blacklist."
-					}
+					addToList(ret, thisconfig.lua_blacklist, commands, "was added to the blacklist.", "is already on the blacklist.");
 				} else if(commands[0] == "whitelist") {
-					if(removeFromArray(thisconfig.lua_blacklist, commands[1])) {
-						ret = commands[1] + " was removed from the blacklist."
-						saveConfig();
-					} else {
-						ret = commands[1] + " is already on the whitelist."
-					}
+					removeFromList(ret, thisconfig.lua_blacklist, commands, "was removed from the blacklist.", "is already on the whitelist.");
 				}
 			}
 		}
