@@ -109,7 +109,7 @@ function addToList(list, commands, successString, failureString) {
 		} else {
 			ret += commands[i] + " " + failureString;
 		}
-		if(i < commands.length - 2) {
+		if(i < commands.length - 1) {
 			ret += "\n";
 		}
 	};
@@ -125,7 +125,7 @@ function removeFromList(list, commands, successString, failureString) {
 		} else {
 			ret += commands[i] + " " + failureString;
 		}
-		if(i < commands.length - 2) {
+		if(i < commands.length - 1) {
 			ret += "\n";
 		}
 	};
