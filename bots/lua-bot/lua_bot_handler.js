@@ -197,8 +197,10 @@ module.exports = function(formData) {
 					}
 				}
 			}
-		} else {
-			ret = "You do not have the privileges to do this."
+		}
+		
+		if(ret == null) {
+			ret = "You do not have the privileges to do this.";
 		}
 	}
 
