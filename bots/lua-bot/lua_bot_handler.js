@@ -129,7 +129,10 @@ module.exports = function(formData) {
 	} else if(formData.keyword == "luaadmin") {
 		var firstSpace = formData.message.indexOf(" ")
 		var firstWord = formData.message.substr(0, firstSpace);
-		var secondWord = formData.message.substr(firstSpace + 1);
+		var secondWord;
+		if(formData.message.length > firstSpace + firstWord.length) {
+			var secondWord = formData.message.substr(firstSpace + 1);
+		}
 
 		if(contains(config.user_admins, formData.user_name) || contains(config.user_limited_admins, formData.user_name)) {
 			if(firstWord == "reset") {
