@@ -111,17 +111,15 @@ module.exports = function(formData) {
 
 	var ret;
 	if(formData.keyword == "lua" && !contains(config.user_blacklist, formData.user_name)) {
-		var allowed = true;
-		var illegalword = "";
+		var illegalword;
 		for (var i = 0; i < config.lua_blacklist.length; i++) {
-			if(formData.message.indexOf(config.lua_blacklist[i]) > -1) {
-				allowed = false;
+			if(new RegExp("\\b" + lookup + "\\b")) {
 				illegalword = config.lua_blacklist[i];
 				break;
 			}
 		};
 
-		if(allowed) {
+		if(illegalword == null) {
 			ret = runAndCaptureOutput(formData.team_domain, formData.message);
 		} else {
 			ret = "You aren't allowed to use '" + illegalword + "'' in your code!";
