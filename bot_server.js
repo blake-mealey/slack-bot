@@ -1,10 +1,11 @@
-// General bot config
-var config = require('./bot_config');
+// Server config
+var config = require('./server_config');
 
 // Node libraries
 var http = require('http');
 var qs = require('querystring');
 
+// Simple table contains object method
 function contains(a, obj) {
 	var i = a.length;
 	while (i--) {
@@ -19,10 +20,11 @@ function contains(a, obj) {
 var botHandlers = {};
 for(var name in config.bots) {
 	if(config.bots.hasOwnProperty(name)) {
-		botHandlers[name] = require("./bot-handlers/" + name + "/handler.js");
+		botHandlers[name] = require("./bots/" + name + "-bot/" + name + "_bot_handler.js");
 	}
 }
 
+//Setup server
 var server = http.createServer(function(req, res) {
 	if(req.method == "POST") {
 		var reqBody = '';
