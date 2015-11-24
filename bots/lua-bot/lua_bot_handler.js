@@ -118,7 +118,7 @@ module.exports = function(formData) {
 		};
 
 		if(allowed) {
-			ret = runAndCaptureOutput(name, string);
+			ret = runAndCaptureOutput(formData.team_domain, formData.message);
 		} else {
 			ret = "You aren't allowed to use '" + illegalword + "'' in your code!";
 		}
