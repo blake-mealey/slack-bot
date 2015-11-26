@@ -41,9 +41,7 @@ module.exports = function(formData) {
 			if(last.chapter != passage.chapter) {
 				formatted += chapter(passage.chapter);
 			}
-			if(last.verse != passage.verse) {
-				formatted += verse(passage.verse);
-			}
+			formatted += verse(passage.verse);
 		}
 
 		formatted += passage.text;
