@@ -10,6 +10,6 @@ module.exports = function(formData) {
 	console.log("Bible bot handling request.");
 
 	return {
-		text: getPassage(formData.message);
+		text: getPassage(formData.message)
 	}
 }
