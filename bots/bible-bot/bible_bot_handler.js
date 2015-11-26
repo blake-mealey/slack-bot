@@ -7,7 +7,7 @@ function getPassage(lookup) {
 }
 
 function book(title) {
-	return "\n*" + title + "*\n"
+	return "\n*" + title + "*"
 }
 
 function chapter(chapter) {
