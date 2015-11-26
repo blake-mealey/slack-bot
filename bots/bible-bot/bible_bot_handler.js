@@ -36,7 +36,7 @@ module.exports = function(formData) {
 			formatted += verse(passage.verse);
 		} else {
 			if(last.bookname != passage.bookname) {
-				formatted += book(passage.bookname);
+				formatted += "\n" + book(passage.bookname);
 			}
 			if(last.chapter != passage.chapter) {
 				formatted += chapter(passage.chapter);
