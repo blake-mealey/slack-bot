@@ -18,6 +18,12 @@ module.exports = {
 		"lua": {
 			keywords: ["lua", "luaadmin"],
 			api_tokens: ["oaO0zwUM72SO4l2FkisKZChY", "ReShF6M0O7iEKGVYLK7hCGZC"]
+		},
+
+		// Bible bot
+		"bible": {
+			keywords: ["bible"],
+			api_tokens: ["x6KfCq2MxmJkcIP6sKkhD2Gz", "V98smdRGhoOZv832Z2k3zuGD"]
 		}
 	},
 

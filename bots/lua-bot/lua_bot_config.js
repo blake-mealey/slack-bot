@@ -11,9 +11,9 @@ module.exports = {
 		user_blacklist: [],
 
 		// Keywords that are not allowed in the lua code
-		lua_blacklist: ["while", "repeat", "huge"],
+		lua_blacklist: ["while", "repeat", "huge", "setfenv", "loadfile", "loadstring", "coroutine", "os", "io", "_G", "getfenv", "dofile", "dostring", "load", "dump", "debug", "package", "require"],
 
 		// Max length of the output
-		max_length: 140
+		max_length: 200
 	}
 }
