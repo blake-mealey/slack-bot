@@ -50,7 +50,7 @@ module.exports = function(formData) {
 	};
 
 	return {
-		text: formatted
+		text: formatted.replace(/&#8211;/g, '–')
 	}
 }
 
