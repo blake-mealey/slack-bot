@@ -1,5 +1,8 @@
 // Node libraries
 var request = require('sync-request');
+var Entities = require('html-entities').XmlEntities;
+
+entities = new Entities();
 
 function getPassage(lookup) {
 	var jsonString = request('GET', 'http://labs.bible.org/api/?type=json&passage=' + lookup).body.toString('utf-8')
@@ -50,7 +53,7 @@ module.exports = function(formData) {
 	};
 
 	return {
-		text: formatted.replace(/&#8211;/g, '–')
+		text: entities.decode(formatted)
 	}
 }
 

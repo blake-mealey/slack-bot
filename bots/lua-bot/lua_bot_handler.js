@@ -4,6 +4,9 @@ var config = require('./lua_bot_config');
 // Node libraries
 var nodelua = require('nodelua');
 var fs = require('fs');
+var Entities = require('html-entities').XmlEntities;
+
+entities = new Entities();
 
 // Print method that overrides the default Lua print method
 var output;
@@ -44,6 +47,7 @@ function setupLuaInstance(name) {
 // Captures the output after running some Lua code
 function runAndCaptureOutput(name, string) {
 	try {
+		string = entities.decode(string);
 		output = "";
 		luaInstances[name].doStringSync(string);
 		if(output.length > config[name].max_length) {
@@ -131,6 +135,40 @@ function removeFromList(list, commands, successString, failureString) {
 	};
 	saveConfig();
 	return ret;
+}
+
+var adminCommands = {
+	reset = {
+		permission_level = 1,
+		help_string = "Resets the current Lua instance. (i.e. removes all global variables).",
+		func = function(thisconfig, formData, commands) {
+			setupLuaInstance(formData.team_domain);
+			return "Lua instance reset."
+		}
+	},
+	setlength = {
+		permission_level = 1,
+		help_string = "Sets the max length of the output to a given value.",
+		func = function(thisconfig, formData, commands) {
+			thisconfig.max_length = Number(commands[1]);
+			saveConfig();
+			return "Max length of output set to: " + thisconfig.max_length;
+		}
+	},
+	reset = {
+		permission_level = 1,
+		help_string = "Resets the current Lua instance. (i.e. removes all global variables).",
+		func = function(thisconfig, formData, commands) {
+			var listName = commands[1] == "admins" ? "user_admins" : commands[1] == "limitedadmins" ? "user_limited_admins" : commands[1] == "banned" ?
+				"user_blacklist" : commands[1] == "blacklist" ? "lua_blacklist" : null;
+			if(listName != null) {
+				ret = "";
+				for (var i = 0; i < thisconfig[listName].length; i++) {
+					ret += thisconfig[listName][i] + (i < thisconfig[listName].length - 1 ? ", " : "");
+				};
+			}
+		}
+	},
 }
 
 // Handler function
