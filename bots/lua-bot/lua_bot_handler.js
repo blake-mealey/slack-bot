@@ -138,27 +138,27 @@ function removeFromList(list, commands, successString, failureString) {
 }
 
 var adminCommands = {
-	reset = {
-		permission_level = 1,
-		help_string = "Resets the current Lua instance. (i.e. removes all global variables).",
-		func = function(thisconfig, formData, commands) {
+	reset: {
+		permission_level: 1,
+		help_string: "Resets the current Lua instance. (i.e. removes all global variables).",
+		func: function(thisconfig, formData, commands) {
 			setupLuaInstance(formData.team_domain);
 			return "Lua instance reset."
 		}
 	},
-	setlength = {
-		permission_level = 1,
-		help_string = "Sets the max length of the output to a given value.",
-		func = function(thisconfig, formData, commands) {
+	setlength: {
+		permission_level: 1,
+		help_string: "Sets the max length of the output to a given value.",
+		func: function(thisconfig, formData, commands) {
 			thisconfig.max_length = Number(commands[1]);
 			saveConfig();
 			return "Max length of output set to: " + thisconfig.max_length;
 		}
 	},
-	reset = {
-		permission_level = 1,
-		help_string = "Resets the current Lua instance. (i.e. removes all global variables).",
-		func = function(thisconfig, formData, commands) {
+	reset: {
+		permission_level: 1,
+		help_string: "Resets the current Lua instance. (i.e. removes all global variables).",
+		func: function(thisconfig, formData, commands) {
 			var listName = commands[1] == "admins" ? "user_admins" : commands[1] == "limitedadmins" ? "user_limited_admins" : commands[1] == "banned" ?
 				"user_blacklist" : commands[1] == "blacklist" ? "lua_blacklist" : null;
 			if(listName != null) {
